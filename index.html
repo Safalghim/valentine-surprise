@@ -120,7 +120,7 @@ button{
   to{opacity:1;transform:scale(1);}
 }
 
-/* Popup overlay */
+/* POPUP OVERLAY */
 .popup-overlay{
   position:fixed;
   top:0;
@@ -166,7 +166,7 @@ button{
   to{opacity:1;transform:scale(1);}
 }
 
-/* Slideshow arrows */
+/* Slideshow nav buttons */
 .prev, .next{
   cursor:pointer;
   position:absolute;
@@ -177,11 +177,65 @@ button{
   padding:10px 15px;
   border-radius:50%;
   font-size:20px;
-  user-select:none;
-  z-index:30;
 }
 .prev{left:10px;}
 .next{right:10px;}
+
+/* ================= EXTRA ATTRACTIVE ENHANCEMENTS ================= */
+
+/* Stars */
+#stars{
+  position:fixed;
+  width:100%;
+  height:100%;
+  top:0;
+  left:0;
+  pointer-events:none;
+  z-index:0;
+  overflow:hidden;
+}
+
+.star{
+  position:absolute;
+  width:2px;
+  height:2px;
+  background:white;
+  border-radius:50%;
+  opacity:0;
+  animation:twinkle 2s infinite;
+}
+
+@keyframes twinkle{
+  0%,100%{opacity:0;}
+  50%{opacity:1;}
+}
+
+/* Image hover glow */
+#mainImage:hover, .slide img:hover{
+  box-shadow: 0 0 30px 10px rgba(255, 192, 203, 0.6);
+  transform: scale(1.05);
+  transition: all 0.5s ease;
+}
+
+/* Glow behind popup */
+#finalPopup.show-popup::before{
+  content:"";
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  width:500px;
+  height:500px;
+  background: radial-gradient(circle, rgba(255,192,203,0.4), rgba(255,192,203,0));
+  border-radius:50%;
+  z-index:-1;
+  animation:glowPulse 2s infinite alternate;
+}
+
+@keyframes glowPulse{
+  from{transform:translate(-50%,-50%) scale(1);}
+  to{transform:translate(-50%,-50%) scale(1.1);}
+}
 </style>
 </head>
 <body>
@@ -192,28 +246,23 @@ button{
   <button onclick="startSurprise()">Click to Start 💕</button>
 </div>
 
-<!-- BACKGROUND MUSIC -->
 <audio id="bgMusic" loop>
-  <source src="romantic-music.mp3" type="audio/mpeg">
+  <source src="image/romantic-music.mp3" type="audio/mpeg">
 </audio>
 
-<!-- MAIN CONTENT -->
 <div id="mainContent" class="hidden">
-
   <div class="header">
-    <img src="your-photo.jpg" alt="Memory">
+    <img src="image/image1.jpeg" alt="Memory" style="max-height:500px; border-radius:20px;">
   </div>
 
   <div class="message-box">
     <h1>Happy Valentine's Day ❤️</h1>
-
     <div id="loveStory">
       <p id="storyText"></p>
     </div>
 
-    <!-- FIRST IMAGE -->
-    <img id="mainImage" src="cat-kiss.gif" 
-         style="max-width:300px;border-radius:20px;margin-bottom:20px;">
+    <!-- MAIN IMAGE -->
+    <img id="mainImage" src="image/zoaywh31gya81.gif" style="max-width:300px;border-radius:20px;margin-bottom:20px;">
 
     <h2 id="questionText">Will you be my Valentine? 💕</h2>
 
@@ -222,10 +271,12 @@ button{
   </div>
 </div>
 
-<!-- FINAL POPUP MESSAGE -->
+<!-- FINAL POPUP -->
 <div class="popup-overlay" id="finalPopup">
   <div class="popup">
-    <h2>She Said YES! 💍❤️</h2>
+    <h2> YES! 💍❤️</h2>
+    <!-- Added Image -->
+    <img src="image/image5.gif" alt="Romantic Couple" style="width:100%; max-width:400px; border-radius:20px; margin-bottom:20px;">
     <p style="line-height:1.7;margin-bottom:20px;">
       I am the happiest person alive!<br>
       I promise to love you forever, laugh with you,<br>
@@ -237,33 +288,42 @@ button{
 
 <!-- SLIDESHOW -->
 <div class="slideshow" id="slideshow" style="display:none; max-width:600px; margin:40px auto; position:relative;">
-  <div class="slide active"><img src="photo1.jpg" style="width:100%; border-radius:20px;"></div>
-  <div class="slide"><img src="photo2.jpg" style="width:100%; border-radius:20px;"></div>
-  <div class="slide"><img src="photo3.jpg" style="width:100%; border-radius:20px;"></div>
-  <div class="slide"><img src="photo4.jpg" style="width:100%; border-radius:20px;"></div>
+  <div class="slide"><img src="image/image2.jpeg" style="width:100%; border-radius:20px;"></div>
+  <div class="slide active"><img src="image/462553886_8803108819751463_4144274280909010895_n.jpg" style="width:100%; border-radius:20px;"></div>
+  <div class="slide"><img src="image/462561899_2052517765168004_2713840822609113280_n.jpg" style="width:100%; border-radius:20px;"></div>
+  <div class="slide"><img src="image/462575123_1272888280629661_8385350921389028682_n.jpg" style="width:100%; border-radius:20px;"></div>
+  <div class="slide"><img src="image/WhatsApp Image 2024-11-10 at 13.20.08_9ff6e62e.jpg" style="width:100%; border-radius:20px;"></div>
+  <div class="slide"><img src="image/image2.jpeg" style="width:100%; border-radius:20px;"></div>
+  <div class="slide"><img src="image/image3.jpeg" style="width:100%; border-radius:20px;"></div>
+  <div class="slide"><img src="image/image4.jpeg" style="width:100%; border-radius:20px;"></div>
 
   <div class="prev" onclick="changeSlide(-1)">❮</div>
   <div class="next" onclick="changeSlide(1)">❯</div>
 </div>
 
+<!-- ================= Twinkling Stars Background ================= -->
+<div id="stars"></div>
+
 <script>
-// ===== LOVE STORY + HEARTS =====
-let stage=1;
-let noMoveEnabled=false;
-
-const storyLines=[
-"The day we met was my favorite accident ❤️",
-"Every laugh with you feels like magic ✨",
-"You are my peace, my chaos, my everything 💕",
-"And today... I just need one answer 💍"
+let stage = 1;
+let noMoveEnabled = false;
+let hearts = ["❤️","💖","💕","💘","💝"];
+let storyLines = [
+  "The day we met was my favorite accident ❤️",
+  "Every laugh with you feels like magic ✨",
+  "You are my peace, my chaos, my everything 💕",
+  "I want to create a lifetime of memories with you 🌟",
+  "Will you be my Valentine? 💖",
+  "I want to be your forever Valentine 💍",
 ];
-
-const hearts=["❤️","💖","💕","💘","💝"];
 
 function startSurprise(){
   document.getElementById("startScreen").classList.add("hidden");
   document.getElementById("mainContent").classList.remove("hidden");
-  document.getElementById("bgMusic").play().catch(()=>{});
+
+  const music = document.getElementById("bgMusic");
+  music.play().catch(()=>{});
+
   setInterval(createHeart,400);
   playLoveStory();
 }
@@ -282,10 +342,10 @@ function typeText(element,text,speed=40){
 }
 
 function playLoveStory(){
-  const storyText=document.getElementById("storyText");
-  let i=0;
+  const storyText = document.getElementById("storyText");
+  let i = 0;
   function nextLine(){
-    if(i<storyLines.length){
+    if(i < storyLines.length){
       typeText(storyText,storyLines[i],35);
       i++;
       setTimeout(nextLine,3000);
@@ -295,49 +355,53 @@ function playLoveStory(){
 }
 
 function createHeart(){
-  const heart=document.createElement("div");
+  const heart = document.createElement("div");
   heart.classList.add("heart");
-  heart.innerHTML=hearts[Math.floor(Math.random()*hearts.length)];
-  heart.style.left=Math.random()*100+"vw";
-  heart.style.fontSize=Math.random()*20+15+"px";
+  heart.innerHTML = hearts[Math.floor(Math.random()*hearts.length)];
+  heart.style.left = Math.random()*100+"vw";
+  heart.style.fontSize = Math.random()*20+15+"px";
   document.body.appendChild(heart);
   setTimeout(()=>heart.remove(),6000);
 }
 
-// ===== YES/NO LOGIC =====
 function handleYes(){
-  const question=document.getElementById("questionText");
-  if(stage===1){
+  const question = document.getElementById("questionText");
+  const mainImage = document.getElementById("mainImage");
+  mainImage.src = "image/uwu-box-head-dancing.gif";
+  
+  if(stage === 1){
     typeText(question,"Will you be my Valentine forever? 💍");
-    stage=2;
-  }else if(stage===2){
+    stage = 2;
+  } else if(stage === 2){
     typeText(question,"Will you marry me? 💖");
-    stage=3;
-  }else{
+    stage = 3;
+  } else {
     showFinale();
   }
 }
 
 function handleNo(){
-  const question=document.getElementById("questionText");
+  const question = document.getElementById("questionText");
+  const mainImage = document.getElementById("mainImage");
   if(!noMoveEnabled){
     typeText(question,"Are you really sure? 🥺");
-    noMoveEnabled=true;
+    mainImage.src = "image/sad-goodbye-crying-pikachu-emotional-anime-pokemon-s6o9gycbmkwj7xvy.gif";
+    noMoveEnabled = true;
   }
 }
 
 document.addEventListener("mouseover",function(e){
-  const noBtn=document.getElementById("noBtn");
-  if(noMoveEnabled && e.target===noBtn){
-    const x=Math.random()*window.innerWidth-100;
-    const y=Math.random()*window.innerHeight-50;
-    noBtn.style.position="fixed";
-    noBtn.style.left=x+"px";
-    noBtn.style.top=y+"px";
+  const noBtn = document.getElementById("noBtn");
+  if(noMoveEnabled && e.target === noBtn){
+    const x = Math.random()*window.innerWidth-100;
+    const y = Math.random()*window.innerHeight-50;
+    noBtn.style.position = "fixed";
+    noBtn.style.left = x+"px";
+    noBtn.style.top = y+"px";
   }
 });
 
-// ===== CONFETTI + FINALE =====
+// ================= Confetti =================
 function createConfetti(){
   for(let i=0;i<150;i++){
     const confetti=document.createElement("div");
@@ -349,23 +413,44 @@ function createConfetti(){
     confetti.style.top="-10px";
     confetti.style.transition="top 3s linear, transform 3s";
     document.body.appendChild(confetti);
+
     setTimeout(()=>{
       confetti.style.top=window.innerHeight+"px";
       confetti.style.transform=`rotate(${Math.random()*500}deg)`;
     },10);
+
     setTimeout(()=>confetti.remove(),3000);
   }
 }
 
+// ================= Balloons =================
+function createBalloons(){
+  const colors = ["#FF4081","#FFEB3B","#4CAF50","#2196F3","#E91E63"];
+  for(let i=0;i<30;i++){
+    const balloon = document.createElement("div");
+    balloon.innerHTML = "🎈";
+    balloon.style.position = "fixed";
+    balloon.style.fontSize = Math.random()*40+30+"px";
+    balloon.style.left = Math.random()*window.innerWidth+"px";
+    balloon.style.top = "-50px";
+    balloon.style.transition = "top 5s linear";
+    document.body.appendChild(balloon);
+    setTimeout(()=>{ balloon.style.top = window.innerHeight+50+"px"; },10);
+    setTimeout(()=>balloon.remove(),5000);
+  }
+}
+
+// ================= Final Show =================
 function showFinale(){
   createConfetti();
-  document.getElementById("mainImage").src="proposal-photo.jpg";
+  createBalloons();
+  document.getElementById("mainImage").src="image/19-02-52-8_512.webp";
   document.getElementById("questionText").innerHTML=
   "You just made me the happiest person alive 💍❤️<br><br>I love you forever.";
   document.getElementById("finalPopup").classList.add("show-popup");
 }
 
-// ===== SLIDESHOW =====
+// ================= Slideshow =================
 let slideIndex=0;
 function showSlideshow(){
   document.getElementById("finalPopup").style.display="none";
@@ -388,7 +473,62 @@ function changeSlide(n){
   if(slideIndex<0) slideIndex=slides.length-1;
   showSlide(slideIndex);
 }
-</script>
 
+// ================= EXTRA ATTRACTIVE ENHANCEMENTS =================
+
+// Twinkling Stars
+for(let i=0;i<100;i++){
+  const star = document.createElement("div");
+  star.classList.add("star");
+  star.style.left = Math.random()*window.innerWidth + "px";
+  star.style.top = Math.random()*window.innerHeight + "px";
+  star.style.animationDuration = (1+Math.random()*2) + "s";
+  document.getElementById("stars").appendChild(star);
+}
+
+// Floating Love Messages
+const loveMessages = ["I ❤️ You", "Forever 💍", "Kisses 💋", "My Valentine 💖"];
+function createFloatingMessages(){
+  const msg = document.createElement("div");
+  msg.innerHTML = loveMessages[Math.floor(Math.random()*loveMessages.length)];
+  msg.style.position = "fixed";
+  msg.style.left = Math.random()*window.innerWidth + "px";
+  msg.style.top = Math.random()*window.innerHeight + "px";
+  msg.style.fontSize = Math.random()*25+15 + "px";
+  msg.style.color = "rgba(255,255,255,0.8)";
+  msg.style.fontWeight = "bold";
+  msg.style.pointerEvents = "none";
+  document.body.appendChild(msg);
+  setTimeout(()=>msg.remove(), 5000);
+}
+setInterval(createFloatingMessages, 1200);
+
+// Floating Hearts
+function createFloatingHearts(){
+  const heart = document.createElement("div");
+  heart.classList.add("heart");
+  heart.style.left = Math.random()*window.innerWidth + "px";
+  heart.style.fontSize = Math.random()*25+10 + "px";
+  heart.innerHTML = ["❤️","💖","💕","💘","💝"][Math.floor(Math.random()*5)];
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(), 7000);
+}
+setInterval(createFloatingHearts, 700);
+
+// Heart Burst on main image click
+document.getElementById("mainImage").addEventListener("click", function(e){
+  for(let i=0;i<12;i++){
+    const h = document.createElement("div");
+    h.innerHTML = "💖";
+    h.style.position = "fixed";
+    h.style.left = e.clientX + (Math.random()*100-50) + "px";
+    h.style.top = e.clientY + (Math.random()*100-50) + "px";
+    h.style.fontSize = Math.random()*20+10+"px";
+    h.style.pointerEvents = "none";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),1500);
+  }
+});
+</script>
 </body>
 </html>
