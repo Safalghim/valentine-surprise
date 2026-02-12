@@ -242,7 +242,7 @@ button{
 
 <!-- START SCREEN -->
 <div class="start-screen" id="startScreen">
-  <h1>For Someone Very Special ❤️</h1>
+  <h1>For my Very Special person ❤️</h1>
   <button onclick="startSurprise()">Click to Start 💕</button>
 </div>
 
@@ -256,7 +256,7 @@ button{
   </div>
 
   <div class="message-box">
-    <h1>Happy Valentine's Day ❤️</h1>
+    <h1>Happy Valentine's Day kanxo❤️</h1>
     <div id="loveStory">
       <p id="storyText"></p>
     </div>
@@ -487,12 +487,14 @@ for(let i=0;i<100;i++){
 }
 
 // Floating Love Messages
-const loveMessages = ["I ❤️ You", "Forever 💍", "Kisses 💋", "My Valentine 💖"];
+const loveMessages = ["I ❤️ You", "Forever 💍", "Kisses 💋", "My Valentine 💖" "Love Love Love"];
 function createFloatingMessages(){
   const msg = document.createElement("div");
   msg.innerHTML = loveMessages[Math.floor(Math.random()*loveMessages.length)];
   msg.style.position = "fixed";
   msg.style.left = Math.random()*window.innerWidth + "px";
+   msg.style.right = Math.random()*window.innerHeight + "px";
+   msg.style.bottom = Math.random()*window.innerWidth + "px";
   msg.style.top = Math.random()*window.innerHeight + "px";
   msg.style.fontSize = Math.random()*25+15 + "px";
   msg.style.color = "rgba(255,255,255,0.8)";
@@ -532,4 +534,5 @@ document.getElementById("mainImage").addEventListener("click", function(e){
 </script>
 </body>
 </html>
+
 
