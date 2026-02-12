@@ -493,8 +493,6 @@ function createFloatingMessages(){
   msg.innerHTML = loveMessages[Math.floor(Math.random()*loveMessages.length)];
   msg.style.position = "fixed";
   msg.style.left = Math.random()*window.innerWidth + "px";
-   msg.style.right = Math.random()*window.innerHeight + "px";
-   msg.style.bottom = Math.random()*window.innerWidth + "px";
   msg.style.top = Math.random()*window.innerHeight + "px";
   msg.style.fontSize = Math.random()*25+15 + "px";
   msg.style.color = "rgba(255,255,255,0.8)";
@@ -534,5 +532,6 @@ document.getElementById("mainImage").addEventListener("click", function(e){
 </script>
 </body>
 </html>
+
 
 
