@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Valentine Surprise ❤️</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  background: radial-gradient(circle at top,#ffd1dc,#ff9a9e,#ff758c);
+  overflow-x:hidden;
+  text-align:center;
+  color:#333;
+}
+
+.start-screen{
+  position:fixed;
+  width:100%;
+  height:100vh;
+  background:linear-gradient(135deg,#ff758c,#ff7eb3);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  z-index:10;
+  color:white;
+}
+
+.start-screen button{
+  padding:15px 35px;
+  font-size:20px;
+  border:none;
+  border-radius:40px;
+  background:white;
+  color:#e91e63;
+  cursor:pointer;
+  margin-top:20px;
+  font-weight:bold;
+}
+
+.hidden{display:none;}
+
+.header img{
+  width:100%;
+  max-height:400px;
+  object-fit:cover;
+  border-bottom-left-radius:30px;
+  border-bottom-right-radius:30px;
+}
+
+.message-box{
+  width:90%;
+  max-width:650px;
+  margin:40px auto;
+  padding:40px;
+  border-radius:30px;
+  backdrop-filter:blur(10px);
+  background:rgba(255,255,255,0.92);
+  box-shadow:0 15px 40px rgba(0,0,0,0.25);
+  animation:fadeIn 1.5s ease;
+}
+
+h1{
+  font-size:32px;
+  font-weight:700;
+  background:linear-gradient(45deg,#e91e63,#ff4081);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  margin-bottom:20px;
+}
+
+#storyText,
+#questionText{
+  line-height:1.8;
+  letter-spacing:1px;
+  margin:20px 0;
+  padding:0 10px;
+}
+
+#loveStory{
+  font-size:20px;
+  min-height:60px;
+}
+
+button{
+  padding:14px 30px;
+  margin:10px;
+  font-size:18px;
+  border:none;
+  border-radius:50px;
+  cursor:pointer;
+  transition:0.3s;
+  box-shadow:0 8px 20px rgba(0,0,0,0.2);
+}
+
+#yesBtn{background:#e91e63;color:white;}
+#noBtn{background:#555;color:white;position:relative;}
+
+.heart{
+  position:fixed;
+  bottom:-10px;
+  animation:floatUp 6s linear infinite;
+}
+
+@keyframes floatUp{
+  0%{transform:translateY(0);opacity:1;}
+  100%{transform:translateY(-100vh);opacity:0;}
+}
+
+@keyframes fadeIn{
+  from{opacity:0;transform:scale(0.9);}
+  to{opacity:1;transform:scale(1);}
+}
+
+/* Popup overlay */
+.popup-overlay{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.6);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  visibility:hidden;
+  opacity:0;
+  transition:0.4s;
+  z-index:20;
+}
+.popup{
+  background:white;
+  width:90%;
+  max-width:500px;
+  padding:30px;
+  border-radius:25px;
+  text-align:center;
+  position:relative;
+  animation:popupFade 0.6s ease;
+}
+@keyframes popupFade{
+  from{transform:scale(0.7);opacity:0;}
+  to{transform:scale(1);opacity:1;}
+}
+.show-popup{
+  visibility:visible;
+  opacity:1;
+}
+
+/* Slideshow fade effect */
+.slide{
+  display:none;
+  animation:fadeZoom 1s ease;
+}
+.active{display:block;}
+@keyframes fadeZoom{
+  from{opacity:0;transform:scale(0.9);}
+  to{opacity:1;transform:scale(1);}
+}
+
+/* Slideshow arrows */
+.prev, .next{
+  cursor:pointer;
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  background:rgba(0,0,0,0.5);
+  color:white;
+  padding:10px 15px;
+  border-radius:50%;
+  font-size:20px;
+  user-select:none;
+  z-index:30;
+}
+.prev{left:10px;}
+.next{right:10px;}
+</style>
+</head>
+<body>
+
+<!-- START SCREEN -->
+<div class="start-screen" id="startScreen">
+  <h1>For Someone Very Special ❤️</h1>
+  <button onclick="startSurprise()">Click to Start 💕</button>
+</div>
+
+<!-- BACKGROUND MUSIC -->
+<audio id="bgMusic" loop>
+  <source src="romantic-music.mp3" type="audio/mpeg">
+</audio>
+
+<!-- MAIN CONTENT -->
+<div id="mainContent" class="hidden">
+
+  <div class="header">
+    <img src="your-photo.jpg" alt="Memory">
+  </div>
+
+  <div class="message-box">
+    <h1>Happy Valentine's Day ❤️</h1>
+
+    <div id="loveStory">
+      <p id="storyText"></p>
+    </div>
+
+    <!-- FIRST IMAGE -->
+    <img id="mainImage" src="cat-kiss.gif" 
+         style="max-width:300px;border-radius:20px;margin-bottom:20px;">
+
+    <h2 id="questionText">Will you be my Valentine? 💕</h2>
+
+    <button id="yesBtn" onclick="handleYes()">Yes 💖</button>
+    <button id="noBtn" onclick="handleNo()">No 😢</button>
+  </div>
+</div>
+
+<!-- FINAL POPUP MESSAGE -->
+<div class="popup-overlay" id="finalPopup">
+  <div class="popup">
+    <h2>She Said YES! 💍❤️</h2>
+    <p style="line-height:1.7;margin-bottom:20px;">
+      I am the happiest person alive!<br>
+      I promise to love you forever, laugh with you,<br>
+      and be by your side through everything 💕
+    </p>
+    <button onclick="showSlideshow()">See More Pictures 💖</button>
+  </div>
+</div>
+
+<!-- SLIDESHOW -->
+<div class="slideshow" id="slideshow" style="display:none; max-width:600px; margin:40px auto; position:relative;">
+  <div class="slide active"><img src="photo1.jpg" style="width:100%; border-radius:20px;"></div>
+  <div class="slide"><img src="photo2.jpg" style="width:100%; border-radius:20px;"></div>
+  <div class="slide"><img src="photo3.jpg" style="width:100%; border-radius:20px;"></div>
+  <div class="slide"><img src="photo4.jpg" style="width:100%; border-radius:20px;"></div>
+
+  <div class="prev" onclick="changeSlide(-1)">❮</div>
+  <div class="next" onclick="changeSlide(1)">❯</div>
+</div>
+
+<script>
+// ===== LOVE STORY + HEARTS =====
+let stage=1;
+let noMoveEnabled=false;
+
+const storyLines=[
+"The day we met was my favorite accident ❤️",
+"Every laugh with you feels like magic ✨",
+"You are my peace, my chaos, my everything 💕",
+"And today... I just need one answer 💍"
+];
+
+const hearts=["❤️","💖","💕","💘","💝"];
+
+function startSurprise(){
+  document.getElementById("startScreen").classList.add("hidden");
+  document.getElementById("mainContent").classList.remove("hidden");
+  document.getElementById("bgMusic").play().catch(()=>{});
+  setInterval(createHeart,400);
+  playLoveStory();
+}
+
+function typeText(element,text,speed=40){
+  element.innerHTML="";
+  let i=0;
+  function typing(){
+    if(i<text.length){
+      element.innerHTML+=text[i]===" "?"&nbsp;":text[i];
+      i++;
+      setTimeout(typing,speed);
+    }
+  }
+  typing();
+}
+
+function playLoveStory(){
+  const storyText=document.getElementById("storyText");
+  let i=0;
+  function nextLine(){
+    if(i<storyLines.length){
+      typeText(storyText,storyLines[i],35);
+      i++;
+      setTimeout(nextLine,3000);
+    }
+  }
+  nextLine();
+}
+
+function createHeart(){
+  const heart=document.createElement("div");
+  heart.classList.add("heart");
+  heart.innerHTML=hearts[Math.floor(Math.random()*hearts.length)];
+  heart.style.left=Math.random()*100+"vw";
+  heart.style.fontSize=Math.random()*20+15+"px";
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(),6000);
+}
+
+// ===== YES/NO LOGIC =====
+function handleYes(){
+  const question=document.getElementById("questionText");
+  if(stage===1){
+    typeText(question,"Will you be my Valentine forever? 💍");
+    stage=2;
+  }else if(stage===2){
+    typeText(question,"Will you marry me? 💖");
+    stage=3;
+  }else{
+    showFinale();
+  }
+}
+
+function handleNo(){
+  const question=document.getElementById("questionText");
+  if(!noMoveEnabled){
+    typeText(question,"Are you really sure? 🥺");
+    noMoveEnabled=true;
+  }
+}
+
+document.addEventListener("mouseover",function(e){
+  const noBtn=document.getElementById("noBtn");
+  if(noMoveEnabled && e.target===noBtn){
+    const x=Math.random()*window.innerWidth-100;
+    const y=Math.random()*window.innerHeight-50;
+    noBtn.style.position="fixed";
+    noBtn.style.left=x+"px";
+    noBtn.style.top=y+"px";
+  }
+});
+
+// ===== CONFETTI + FINALE =====
+function createConfetti(){
+  for(let i=0;i<150;i++){
+    const confetti=document.createElement("div");
+    confetti.style.position="fixed";
+    confetti.style.width="8px";
+    confetti.style.height="8px";
+    confetti.style.background=`hsl(${Math.random()*360},100%,50%)`;
+    confetti.style.left=Math.random()*window.innerWidth+"px";
+    confetti.style.top="-10px";
+    confetti.style.transition="top 3s linear, transform 3s";
+    document.body.appendChild(confetti);
+    setTimeout(()=>{
+      confetti.style.top=window.innerHeight+"px";
+      confetti.style.transform=`rotate(${Math.random()*500}deg)`;
+    },10);
+    setTimeout(()=>confetti.remove(),3000);
+  }
+}
+
+function showFinale(){
+  createConfetti();
+  document.getElementById("mainImage").src="proposal-photo.jpg";
+  document.getElementById("questionText").innerHTML=
+  "You just made me the happiest person alive 💍❤️<br><br>I love you forever.";
+  document.getElementById("finalPopup").classList.add("show-popup");
+}
+
+// ===== SLIDESHOW =====
+let slideIndex=0;
+function showSlideshow(){
+  document.getElementById("finalPopup").style.display="none";
+  const slideshow=document.getElementById("slideshow");
+  slideshow.style.display="block";
+  showSlide(slideIndex);
+  setInterval(()=>changeSlide(1),3000);
+}
+
+function showSlide(n){
+  const slides=document.querySelectorAll(".slide");
+  slides.forEach(s=>s.classList.remove("active"));
+  slides[n].classList.add("active");
+}
+
+function changeSlide(n){
+  const slides=document.querySelectorAll(".slide");
+  slideIndex+=n;
+  if(slideIndex>=slides.length) slideIndex=0;
+  if(slideIndex<0) slideIndex=slides.length-1;
+  showSlide(slideIndex);
+}
+</script>
+
+</body>
+</html>
